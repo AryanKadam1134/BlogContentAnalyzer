@@ -39,26 +39,20 @@ export async function generateInsights(content: string): Promise<string> {
     
     const prompt = `You are an expert content analyst. Analyze the provided content and generate comprehensive insights. Structure your response clearly with these sections:
 
-## Executive Summary
+1) Executive Summary
 Brief 2-3 sentence overview of the content
 
-## Key Themes
+2) Key Themes
 Main topics and concepts covered
 
-## Content Analysis  
+3) Content Analysis  
 Quality, structure, and effectiveness assessment
 
-## Target Audience
+4) Target Audience
 Who this content serves
 
-## Key Takeaways
+5) Key Takeaways
 Most important insights and learnings
-
-## Strengths
-What works well in this content
-
-## Recommendations
-Specific suggestions for improvement
 
 Keep your analysis concise but thorough, focusing on actionable insights.
 
