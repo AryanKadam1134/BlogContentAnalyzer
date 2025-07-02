@@ -1,8 +1,6 @@
-# Blog Content Analyzer
+# Content Analyzer
 
 A powerful AI-powered web application that extracts insights from blog posts and articles using Google Gemini AI. The application features content fetching from URLs, text-to-speech functionality, and comprehensive content analysis.
-
-![Blog Content Analyzer](https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=1200&h=400&fit=crop)
 
 ## ✨ Features
 
