@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { FileText, Link, Brain, Volume2, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, Link, Brain, Volume2, VolumeX, Play, Pause, Square, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { fetchContentFromUrl } from './services/contentService';
 import { generateInsights } from './services/geminiService';
-import { speakText } from './services/speechService';
+import { speakText, stopSpeaking, pauseSpeaking, resumeSpeaking, isSpeaking, isSpeechPaused } from './services/speechService';
 
 interface AnalysisState {
   content: string;
@@ -11,6 +11,7 @@ interface AnalysisState {
   isLoading: boolean;
   isFetching: boolean;
   isSpeaking: boolean;
+  isPaused: boolean;
   error: string;
 }
 
@@ -22,8 +23,27 @@ function App() {
     isLoading: false,
     isFetching: false,
     isSpeaking: false,
+    isPaused: false,
     error: ''
   });
+
+  // Update speech status periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const speaking = isSpeaking();
+      const paused = isSpeechPaused();
+      
+      if (state.isSpeaking !== speaking || state.isPaused !== paused) {
+        setState(prev => ({
+          ...prev,
+          isSpeaking: speaking,
+          isPaused: paused
+        }));
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [state.isSpeaking, state.isPaused]);
 
   const clearError = () => setState(prev => ({ ...prev, error: '' }));
 
@@ -83,7 +103,7 @@ function App() {
       return;
     }
 
-    setState(prev => ({ ...prev, isSpeaking: true, error: '' }));
+    setState(prev => ({ ...prev, isSpeaking: true, isPaused: false, error: '' }));
     
     try {
       await speakText(state.insights);
@@ -93,8 +113,79 @@ function App() {
         error: error instanceof Error ? error.message : 'Failed to read text aloud'
       }));
     } finally {
-      setState(prev => ({ ...prev, isSpeaking: false }));
+      setState(prev => ({ ...prev, isSpeaking: false, isPaused: false }));
     }
+  };
+
+  const handlePauseSpeech = () => {
+    pauseSpeaking();
+    setState(prev => ({ ...prev, isPaused: true }));
+  };
+
+  const handleResumeSpeech = () => {
+    resumeSpeaking();
+    setState(prev => ({ ...prev, isPaused: false }));
+  };
+
+  const handleStopSpeech = () => {
+    stopSpeaking();
+    setState(prev => ({ ...prev, isSpeaking: false, isPaused: false }));
+  };
+
+  const renderSpeechControls = () => {
+    if (!state.insights) return null;
+
+    if (state.isSpeaking && !state.isPaused) {
+      return (
+        <div className="flex gap-2">
+          <button
+            onClick={handlePauseSpeech}
+            className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+          >
+            <Pause className="w-4 h-4" />
+            Pause
+          </button>
+          <button
+            onClick={handleStopSpeech}
+            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+          >
+            <Square className="w-4 h-4" />
+            Stop
+          </button>
+        </div>
+      );
+    }
+
+    if (state.isPaused) {
+      return (
+        <div className="flex gap-2">
+          <button
+            onClick={handleResumeSpeech}
+            className="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+          >
+            <Play className="w-4 h-4" />
+            Resume
+          </button>
+          <button
+            onClick={handleStopSpeech}
+            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+          >
+            <Square className="w-4 h-4" />
+            Stop
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <button
+        onClick={handleReadAloud}
+        className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2"
+      >
+        <Volume2 className="w-4 h-4" />
+        Read Aloud
+      </button>
+    );
   };
 
   return (
@@ -221,25 +312,7 @@ function App() {
                 <h2 className="text-lg font-semibold text-gray-900">
                   Gemini AI Insights
                 </h2>
-                {state.insights && (
-                  <button
-                    onClick={handleReadAloud}
-                    disabled={state.isSpeaking}
-                    className="bg-orange-100 hover:bg-orange-200 disabled:bg-orange-50 text-orange-700 font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2"
-                  >
-                    {state.isSpeaking ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Speaking...
-                      </>
-                    ) : (
-                      <>
-                        <Volume2 className="w-4 h-4" />
-                        Read Aloud
-                      </>
-                    )}
-                  </button>
-                )}
+                {renderSpeechControls()}
               </div>
               
               <div className="min-h-[400px] max-h-[600px] overflow-y-auto">

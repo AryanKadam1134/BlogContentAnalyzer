@@ -2,6 +2,9 @@
  * Speech synthesis service using the Web Speech API
  */
 
+let currentUtterance: SpeechSynthesisUtterance | null = null;
+let isPaused = false;
+
 export async function speakText(text: string): Promise<void> {
   return new Promise((resolve, reject) => {
     // Check if speech synthesis is supported
@@ -12,12 +15,14 @@ export async function speakText(text: string): Promise<void> {
 
     // Stop any ongoing speech
     window.speechSynthesis.cancel();
+    isPaused = false;
 
     // Clean the text for better speech output
     const cleanText = cleanTextForSpeech(text);
 
     // Create speech synthesis utterance
     const utterance = new SpeechSynthesisUtterance(cleanText);
+    currentUtterance = utterance;
 
     // Configure speech settings
     utterance.rate = 0.9; // Slightly slower for better comprehension
@@ -37,15 +42,27 @@ export async function speakText(text: string): Promise<void> {
 
     // Set up event handlers
     utterance.onend = () => {
+      currentUtterance = null;
+      isPaused = false;
       resolve();
     };
 
     utterance.onerror = (event) => {
+      currentUtterance = null;
+      isPaused = false;
       reject(new Error(`Speech synthesis error: ${event.error}`));
     };
 
     utterance.onstart = () => {
       console.log('Speech synthesis started');
+    };
+
+    utterance.onpause = () => {
+      console.log('Speech synthesis paused');
+    };
+
+    utterance.onresume = () => {
+      console.log('Speech synthesis resumed');
     };
 
     // Handle the case where voices aren't loaded yet
@@ -69,6 +86,51 @@ export async function speakText(text: string): Promise<void> {
       window.speechSynthesis.speak(utterance);
     }
   });
+}
+
+/**
+ * Stop any ongoing speech synthesis
+ */
+export function stopSpeaking(): void {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+    isPaused = false;
+  }
+}
+
+/**
+ * Pause the current speech synthesis
+ */
+export function pauseSpeaking(): void {
+  if ('speechSynthesis' in window && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+    window.speechSynthesis.pause();
+    isPaused = true;
+  }
+}
+
+/**
+ * Resume the paused speech synthesis
+ */
+export function resumeSpeaking(): void {
+  if ('speechSynthesis' in window && window.speechSynthesis.paused) {
+    window.speechSynthesis.resume();
+    isPaused = false;
+  }
+}
+
+/**
+ * Check if speech is currently playing
+ */
+export function isSpeaking(): boolean {
+  return 'speechSynthesis' in window && window.speechSynthesis.speaking;
+}
+
+/**
+ * Check if speech is currently paused
+ */
+export function isSpeechPaused(): boolean {
+  return isPaused && 'speechSynthesis' in window && window.speechSynthesis.paused;
 }
 
 /**
@@ -98,15 +160,6 @@ function cleanTextForSpeech(text: string): string {
     // Clean up extra whitespace
     .replace(/\s+/g, ' ')
     .trim();
-}
-
-/**
- * Stop any ongoing speech synthesis
- */
-export function stopSpeaking(): void {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-  }
 }
 
 /**
