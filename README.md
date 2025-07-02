@@ -41,7 +41,7 @@ A powerful AI-powered web application that extracts insights from blog posts and
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd blog-content-analyzer
+   cd content-analyzer
    ```
 
 2. **Install dependencies**
