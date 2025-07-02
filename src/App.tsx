@@ -259,7 +259,7 @@ function App() {
             <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 px-4">
-            Blog Content Analyzer
+            Content Analyzer
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Extract insights from any blog or article using Google Gemini AI
