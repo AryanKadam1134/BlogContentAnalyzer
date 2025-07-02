@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, Link, Brain, Volume2, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { fetchContentFromUrl } from './services/contentService';
-import { generateInsights } from './services/openaiService';
+import { generateInsights } from './services/geminiService';
 import { speakText } from './services/speechService';
 
 interface AnalysisState {
@@ -109,7 +109,7 @@ function App() {
             Blog Content Analyzer
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Extract insights from any blog or article using AI-powered analysis
+            Extract insights from any blog or article using Google Gemini AI
           </p>
         </div>
 
@@ -219,7 +219,7 @@ function App() {
             <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  AI Insights
+                  Gemini AI Insights
                 </h2>
                 {state.insights && (
                   <button
@@ -268,7 +268,7 @@ function App() {
         {/* Footer */}
         <div className="mt-12 pt-8 border-t border-gray-200 text-center">
           <p className="text-gray-500">
-            Powered by AI • Built with React & Tailwind CSS
+            Powered by Google Gemini AI • Built with React & Tailwind CSS
           </p>
         </div>
       </div>
