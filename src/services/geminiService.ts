@@ -113,7 +113,7 @@ ${truncatedContent}`;
         if (errorData.error) {
           errorMessage = errorData.error.message || errorMessage;
         }
-      } catch (e) {
+      } catch {
         // If we can't parse the error response, use the default message
       }
       

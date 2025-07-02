@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FileText, Link, Brain, Volume2, VolumeX, Play, Pause, Square, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { FileText, Link, Brain, Volume2, Play, Pause, Square, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { fetchContentFromUrl } from './services/contentService';
 import { generateInsights } from './services/geminiService';
 import { speakText, stopSpeaking, pauseSpeaking, resumeSpeaking, isSpeaking, isSpeechPaused } from './services/speechService';
@@ -27,23 +27,52 @@ function App() {
     error: ''
   });
 
-  // Update speech status periodically
+  // Update speech status periodically with more frequent checks
   useEffect(() => {
     const interval = setInterval(() => {
       const speaking = isSpeaking();
       const paused = isSpeechPaused();
       
+      // Debug logging
+      console.log('Speech status check:', {
+        uiSpeaking: state.isSpeaking,
+        uiPaused: state.isPaused,
+        actualSpeaking: speaking,
+        actualPaused: paused,
+        speechSynthesisSpeaking: window.speechSynthesis?.speaking,
+        speechSynthesisPaused: window.speechSynthesis?.paused
+      });
+      
+      // Update state if there's a change
       if (state.isSpeaking !== speaking || state.isPaused !== paused) {
+        console.log('Updating speech state:', { speaking, paused });
         setState(prev => ({
           ...prev,
           isSpeaking: speaking,
           isPaused: paused
         }));
       }
-    }, 100);
+      
+      // Reset state if speech has ended and we're not tracking it correctly
+      if (!speaking && !paused && (state.isSpeaking || state.isPaused)) {
+        console.log('Resetting speech state - speech ended');
+        setState(prev => ({
+          ...prev,
+          isSpeaking: false,
+          isPaused: false
+        }));
+      }
+    }, 200); // Check every 200ms for better responsiveness
 
     return () => clearInterval(interval);
   }, [state.isSpeaking, state.isPaused]);
+
+  // Cleanup speech on component unmount
+  useEffect(() => {
+    return () => {
+      stopSpeaking();
+    };
+  }, []);
 
   const clearError = () => setState(prev => ({ ...prev, error: '' }));
 
@@ -103,6 +132,7 @@ function App() {
       return;
     }
 
+    // Clear any previous errors and set initial state
     setState(prev => ({ ...prev, isSpeaking: true, isPaused: false, error: '' }));
     
     try {
@@ -110,26 +140,57 @@ function App() {
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to read text aloud'
+        error: error instanceof Error ? error.message : 'Failed to read text aloud',
+        isSpeaking: false,
+        isPaused: false
       }));
-    } finally {
-      setState(prev => ({ ...prev, isSpeaking: false, isPaused: false }));
     }
+    // Note: The finally block is removed because the speech end event will handle state cleanup
   };
 
   const handlePauseSpeech = () => {
-    pauseSpeaking();
-    setState(prev => ({ ...prev, isPaused: true }));
+    console.log('User clicked pause button');
+    try {
+      pauseSpeaking();
+      // Immediately update the UI state to show pause button is clicked
+      setState(prev => ({ ...prev, isPaused: true, isSpeaking: false }));
+    } catch (error) {
+      console.error('Failed to pause speech:', error);
+      setState(prev => ({ 
+        ...prev, 
+        error: 'Failed to pause speech'
+      }));
+    }
   };
 
   const handleResumeSpeech = () => {
-    resumeSpeaking();
-    setState(prev => ({ ...prev, isPaused: false }));
+    console.log('User clicked resume button');
+    try {
+      resumeSpeaking();
+      // Immediately update the UI state to show resume button is clicked
+      setState(prev => ({ ...prev, isPaused: false, isSpeaking: true }));
+    } catch (error) {
+      console.error('Failed to resume speech:', error);
+      setState(prev => ({ 
+        ...prev, 
+        error: 'Failed to resume speech'
+      }));
+    }
   };
 
   const handleStopSpeech = () => {
-    stopSpeaking();
-    setState(prev => ({ ...prev, isSpeaking: false, isPaused: false }));
+    try {
+      stopSpeaking();
+      setState(prev => ({ ...prev, isSpeaking: false, isPaused: false }));
+    } catch (error) {
+      console.error('Failed to stop speech:', error);
+      setState(prev => ({ 
+        ...prev, 
+        error: 'Failed to stop speech',
+        isSpeaking: false,
+        isPaused: false
+      }));
+    }
   };
 
   const renderSpeechControls = () => {
@@ -140,7 +201,7 @@ function App() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handlePauseSpeech}
-            className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+            className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm border-2 border-orange-300"
           >
             <Pause className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Pause</span>
@@ -161,7 +222,7 @@ function App() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handleResumeSpeech}
-            className="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+            className="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm border-2 border-green-300"
           >
             <Play className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Resume</span>
