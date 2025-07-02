@@ -137,20 +137,20 @@ function App() {
 
     if (state.isSpeaking && !state.isPaused) {
       return (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={handlePauseSpeech}
-            className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+            className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
           >
-            <Pause className="w-4 h-4" />
-            Pause
+            <Pause className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Pause</span>
           </button>
           <button
             onClick={handleStopSpeech}
-            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
           >
-            <Square className="w-4 h-4" />
-            Stop
+            <Square className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Stop</span>
           </button>
         </div>
       );
@@ -158,20 +158,20 @@ function App() {
 
     if (state.isPaused) {
       return (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={handleResumeSpeech}
-            className="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+            className="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
           >
-            <Play className="w-4 h-4" />
-            Resume
+            <Play className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Resume</span>
           </button>
           <button
             onClick={handleStopSpeech}
-            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-2"
+            className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
           >
-            <Square className="w-4 h-4" />
-            Stop
+            <Square className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Stop</span>
           </button>
         </div>
       );
@@ -180,39 +180,40 @@ function App() {
     return (
       <button
         onClick={handleReadAloud}
-        className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2"
+        className="bg-orange-100 hover:bg-orange-200 text-orange-700 font-medium py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition duration-200 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
       >
-        <Volume2 className="w-4 h-4" />
-        Read Aloud
+        <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />
+        <span className="hidden sm:inline">Read Aloud</span>
+        <span className="sm:hidden">Read</span>
       </button>
     );
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-4 py-6 sm:py-8 max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-6">
-            <Brain className="w-8 h-8 text-white" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4 sm:mb-6">
+            <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 px-4">
             Blog Content Analyzer
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
             Extract insights from any blog or article using Google Gemini AI
           </p>
         </div>
 
         {/* Error Display */}
         {state.error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="text-red-800">{state.error}</p>
+          <div className="mb-6 sm:mb-8 mx-4 sm:mx-0 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mt-0.5 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm sm:text-base text-red-800 break-words">{state.error}</p>
               <button
                 onClick={clearError}
-                className="text-red-600 hover:text-red-800 text-sm font-medium mt-1"
+                className="text-red-600 hover:text-red-800 text-xs sm:text-sm font-medium mt-1"
               >
                 Dismiss
               </button>
@@ -220,29 +221,29 @@ function App() {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Input Section */}
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             {/* URL Input */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50">
               <div className="flex items-center gap-3 mb-4">
-                <Link className="w-5 h-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">
+                <Link className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                   Fetch from URL
                 </h2>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <input
                   type="url"
                   placeholder="https://example.com/blog-post"
                   value={state.url}
                   onChange={(e) => setState(prev => ({ ...prev, url: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                 />
                 <button
                   onClick={handleFetchContent}
                   disabled={state.isFetching}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 sm:py-3 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   {state.isFetching ? (
                     <>
@@ -260,10 +261,10 @@ function App() {
             </div>
 
             {/* Content Input */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50">
               <div className="flex items-center gap-3 mb-4">
-                <FileText className="w-5 h-5 text-green-600" />
-                <h2 className="text-lg font-semibold text-gray-900">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                   Paste Content
                 </h2>
               </div>
@@ -271,15 +272,14 @@ function App() {
                 placeholder="Paste your blog content here..."
                 value={state.content}
                 onChange={(e) => setState(prev => ({ ...prev, content: e.target.value }))}
-                rows={12}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 resize-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 resize-none responsive-textarea"
               />
-              <div className="mt-4 flex justify-between items-center text-sm text-gray-500">
+              <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 text-xs sm:text-sm text-gray-500">
                 <span>{state.content.length} characters</span>
                 {state.content.length > 0 && (
                   <div className="flex items-center gap-1 text-green-600">
-                    <CheckCircle className="w-4 h-4" />
-                    Content ready
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="text-xs sm:text-sm">Content ready</span>
                   </div>
                 )}
               </div>
@@ -289,46 +289,48 @@ function App() {
             <button
               onClick={handleGenerateInsights}
               disabled={state.isLoading || !state.content.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-medium py-4 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 text-lg"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-medium py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 text-base sm:text-lg"
             >
               {state.isLoading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Analyzing Content...
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                  <span className="text-sm sm:text-base">Analyzing Content...</span>
                 </>
               ) : (
                 <>
-                  <Brain className="w-5 h-5" />
-                  Generate Insights
+                  <Brain className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-base">Generate Insights</span>
                 </>
               )}
             </button>
           </div>
 
           {/* Results Section */}
-          <div className="space-y-6">
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/50">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+          <div className="space-y-4 lg:space-y-6">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                   Gemini AI Insights
                 </h2>
-                {renderSpeechControls()}
+                <div className="flex-shrink-0">
+                  {renderSpeechControls()}
+                </div>
               </div>
               
-              <div className="min-h-[400px] max-h-[600px] overflow-y-auto">
+              <div className="min-h-[300px] sm:min-h-[400px] max-h-[500px] sm:max-h-[600px] overflow-y-auto">
                 {state.insights ? (
-                  <div className="prose prose-gray max-w-none">
-                    <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                  <div className="prose prose-gray max-w-none prose-sm sm:prose-base">
+                    <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-sm sm:text-base">
                       {state.insights}
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                      <Brain className="w-8 h-8 text-gray-400" />
+                  <div className="flex flex-col items-center justify-center h-full text-center py-8 sm:py-12">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                      <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                     </div>
-                    <p className="text-gray-500 text-lg mb-2">No insights generated yet</p>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-gray-500 text-base sm:text-lg mb-1 sm:mb-2">No insights generated yet</p>
+                    <p className="text-gray-400 text-xs sm:text-sm px-4">
                       Add content and click "Generate Insights" to get started
                     </p>
                   </div>
@@ -339,8 +341,8 @@ function App() {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-          <p className="text-gray-500">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200 text-center mx-4 sm:mx-0">
+          <p className="text-gray-500 text-xs sm:text-sm px-4">
             Powered by Google Gemini AI • Built with React & Tailwind CSS
           </p>
         </div>

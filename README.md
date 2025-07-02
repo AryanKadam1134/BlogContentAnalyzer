@@ -139,53 +139,12 @@ The application includes comprehensive error handling for:
 - Browser compatibility issues
 - Content parsing failures
 
-## 🌐 Browser Support
-
-- **Modern Browsers**: Chrome, Firefox, Safari, Edge (latest versions)
-- **Speech Synthesis**: Requires browsers with Web Speech API support
-- **Responsive Design**: Works on all screen sizes
-
 ## 📝 API Limits
 
 ### Google Gemini API
 - Free tier: 15 requests per minute
 - Content limit: ~4000 characters per request
 - Rate limiting is handled gracefully with user-friendly error messages
-
-## 🔒 Privacy & Security
-
-- **No Data Storage**: Content is processed in real-time and not stored
-- **Secure API Calls**: All API communications use HTTPS
-- **Client-Side Processing**: Speech synthesis happens entirely in the browser
-- **Environment Variables**: Sensitive API keys are properly configured
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Google Gemini AI** for powerful content analysis capabilities
-- **Lucide React** for beautiful, consistent icons
-- **Tailwind CSS** for rapid UI development
-- **Vite** for excellent developer experience
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-1. Check the error messages for specific guidance
-2. Ensure your Gemini API key is correctly configured
-3. Verify your internet connection for content fetching
-4. Check browser console for detailed error information
-
 ---
 
 **Built with ❤️ using React, TypeScript, and Google Gemini AI**
