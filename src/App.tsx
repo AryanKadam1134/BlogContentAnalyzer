@@ -255,7 +255,7 @@ function App() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-4 py-6 sm:py-8 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-700 to-green-700 rounded-2xl mb-4 sm:mb-6">
             <Brain className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 px-4">
@@ -350,7 +350,7 @@ function App() {
             <button
               onClick={handleGenerateInsights}
               disabled={state.isLoading || !state.content.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-400 text-white font-medium py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 text-base sm:text-lg"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 text-base sm:text-lg"
             >
               {state.isLoading ? (
                 <>
